@@ -1,4 +1,4 @@
-const tasks = [];
+let tasks = [];
 const taskList = document.getElementById("list");
 const addTaskInput = document.getElementById("add");
 const tasksCounter = document.getElementById("tasks-counter");
@@ -7,7 +7,20 @@ function renderList() {}
 
 function markTaskAsComplete(taskId) {}
 
-function deleteTask(taskId) {}
+//delete a particular task
+function deleteTask(taskId) {
+
+    //we have to remove the task with "id:taskId" from "tasks" array
+
+    //we will create new array and use filter() over "tasks" to get array with removed task
+    const newTasks = tasks.filter((task) => {
+        return task.id != taskId;
+    });
+
+    tasks = newTasks;
+    renderList();
+    showNotification("Task deleted successfully!!");
+}
 
 //add user's tasks into "task" array
 function addTask(task) {
