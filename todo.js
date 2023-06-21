@@ -3,15 +3,34 @@ const tasksList = document.getElementById("list");
 const addTaskInput = document.getElementById("add");
 const tasksCounter = document.getElementById("tasks-counter");
 
+//fetch todos from api
+function fetchTodos() {
+    //GET Request   
+    fetch("https://jsonplaceholder.typicode.com/todos")
+        //we will get response object, to get data, we need to convert it to JSON
+        .then((response) => {
+            // console.log(response);
+            return response.json(); //returns promise
+        })
+        .then((data) => {
+            console.log(data);  //this data will have actual json objects
+            tasks = data.slice(0,10);   //to get first 10 todos
+            renderList();
+        })
+        .catch((error) => {
+            console.log('error',error);
+        })
+}
+
 function addTaskToDOM(task) {
 
     const li = document.createElement('li');
 
     li.innerHTML = `
         <input type="checkbox" id="${task.id}" ${
-      task.done ? "checked" : ""
+      task.completed ? "checked" : ""
     } class="custom-checkbox">
-        <label for="${task.id}">${task.text}</label>
+        <label for="${task.id}">${task.title}</label>
         <img src="https://img.icons8.com/?size=1x&id=4Ozf0g4MsWFS&format=png" class="delete" data-id="${
           task.id
         }" />
@@ -30,7 +49,7 @@ function renderList() {
     tasksCounter.innerHTML = tasks.length;
 }
 
-//change the state of done field of the task
+//change the state of completed field of the task
 function toggleTask(taskId) {
 
     //select the required task from the array
@@ -43,8 +62,8 @@ function toggleTask(taskId) {
         //retrieve the task
         const currentTask = task[0];
 
-        //change the state of done field
-        currentTask.done = !currentTask.done;
+        //change the state of completed field
+        currentTask.completed = !currentTask.completed;
         
         renderList();
         showNotification("task toggled successfully");
@@ -103,9 +122,9 @@ function handleInputKeyPress(event) {
 
     //create "task" object
     const task = {
-      text: text, //user input
+      title : text, //user input
       id: Date.now().toString(), //whatever task is created, we have to assign an id
-      done: false, //whenever user is typing, we should set done as false
+      completed: false, //whenever user is typing, we should set completed as false
     };
 
     //once the user presses "Enter", we need to make input box empty after addding the text into list
@@ -116,12 +135,9 @@ function handleInputKeyPress(event) {
   }
 }
 
-//used 'keyup' even, as we want the input given by user until he/she presses "Enter" button
-addTaskInput.addEventListener("keyup", handleInputKeyPress);
-
 function handleClickListener(event) {
     const target = event.target;
-    console.log(target);
+    // console.log(target); //shows where we have clicked
 
     if(target.className == "delete") {
 
@@ -135,4 +151,13 @@ function handleClickListener(event) {
     }
 }
 
-document.addEventListener('click', handleClickListener);
+function initializeApp() {
+
+    fetchTodos();
+
+    //used 'keyup' even, as we want the input given by user until he/she presses "Enter" button
+    addTaskInput.addEventListener("keyup", handleInputKeyPress);
+    document.addEventListener("click", handleClickListener);
+}
+
+initializeApp();
