@@ -118,3 +118,21 @@ function handleInputKeyPress(event) {
 
 //used 'keyup' even, as we want the input given by user until he/she presses "Enter" button
 addTaskInput.addEventListener("keyup", handleInputKeyPress);
+
+function handleClickListener(event) {
+    const target = event.target;
+    console.log(target);
+
+    if(target.className == "delete") {
+
+        const taskId = target.dataset.id;  
+        deleteTask(taskId);
+    }
+
+    else if(target.className == 'custom-checkbox') {
+        const taskId = target.id;
+        toggleTask(taskId);
+    }
+}
+
+document.addEventListener('click', handleClickListener);
