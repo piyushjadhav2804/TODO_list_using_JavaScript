@@ -5,7 +5,29 @@ const tasksCounter = document.getElementById("tasks-counter");
 
 function renderList() {}
 
-function markTaskAsComplete(taskId) {}
+//change the state of done field of the task
+function toggleTask(taskId) {
+
+    //select the required task from the array
+    const task = tasks.filter((task) => {
+      return task.id == taskId;
+    });    
+
+    //check if task is present
+    if(task.length > 0) {
+        //retrieve the task
+        const currentTask = task[0];
+
+        //change the state of done field
+        currentTask.done = !currentTask.done;
+        
+        renderList();
+        showNotification("task toggled successfully");
+        return;
+    }
+
+    showNotification("Could not toggle the task");
+}
 
 //delete a particular task
 function deleteTask(taskId) {
