@@ -9,7 +9,20 @@ function markTaskAsComplete(taskId) {}
 
 function deleteTask(taskId) {}
 
-function addTask(task) {}
+//add user's tasks into "task" array
+function addTask(task) {
+
+    //check if task is present
+    if(task) {
+        tasks.push(task);
+        renderList();
+        showNotification("Task added successfully");
+        console.log('tasks: ',tasks);
+        return;
+    }
+
+    showNotification("Taask cannot be added");
+}
 
 function showNotification(text) {
   alert(text);
