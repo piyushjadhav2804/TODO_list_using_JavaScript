@@ -4,22 +4,35 @@ const addTaskInput = document.getElementById("add");
 const tasksCounter = document.getElementById("tasks-counter");
 
 //fetch todos from api
-function fetchTodos() {
-    //GET Request   
-    fetch("https://jsonplaceholder.typicode.com/todos")
-        //we will get response object, to get data, we need to convert it to JSON
-        .then((response) => {
-            // console.log(response);
-            return response.json(); //returns promise
-        })
-        .then((data) => {
-            console.log(data);  //this data will have actual json objects
-            tasks = data.slice(0,10);   //to get first 10 todos
-            renderList();
-        })
-        .catch((error) => {
-            console.log('error',error);
-        })
+async function fetchTodos() {
+  //GET Request
+  // fetch("https://jsonplaceholder.typicode.com/todos")
+  //     //we will get response object, to get data, we need to convert it to JSON
+  //     .then((response) => {
+  //         // console.log(response);
+  //         return response.json(); //returns promise
+  //     })
+  //     .then((data) => {
+  //         console.log(data);  //this data will have actual json objects
+  //         tasks = data.slice(0,10);   //to get first 10 todos
+  //         renderList();
+  //     })
+  //     .catch((error) => {
+  //         console.log('error',error);
+  //     })
+
+    try {
+
+        const response = await fetch("https://jsonplaceholder.typicode.com/todos");
+        const data = await response.json();
+
+        tasks = data.slice(0, 10); //to get first 10 todos
+        renderList();
+    }
+
+    catch(error) {
+        console.log(error);
+    }
 }
 
 function addTaskToDOM(task) {
